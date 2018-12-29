@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace Book
 {
-    public partial class Form1 : Form
+    public partial class frmWaitForm : MetroForm
     {
-        public Form1()
+        public frmWaitForm()
         {
             InitializeComponent();
         }
