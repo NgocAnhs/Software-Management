@@ -10,15 +10,19 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
 using MetroFramework.Forms;
+using BusinessLogicLayer;
 
 namespace Book
 {
     public partial class frmLogin : MetroForm
     {
+        AccountBLL db;
+        string username;
+        string password;
+
         public frmLogin()
         {
             InitializeComponent();
-            
         }
 
         private void linkForgotPass_Click(object sender, EventArgs e)
@@ -35,29 +39,33 @@ namespace Book
         }
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if (true)
+            string err = null;
+            username = txtUserName.Text;
+            password = txtPassword.Text;
+            if (chkRemember.Checked)
             {
-                if (chkRemember.Checked)
-                {
-                    Properties.Settings.Default.UserName = txtUserName.Text;
-                    Properties.Settings.Default.Password = txtPassword.Text;
-                    Properties.Settings.Default.Save();
-                }
-                else
-                {
-                    Properties.Settings.Default.UserName = string.Empty;
-                    Properties.Settings.Default.Password = string.Empty;
-                    Properties.Settings.Default.Save();
-                }
-                MetroMessageBox.Show(this,"Đăng nhập thành công!","Thông Báo",
-                    MessageBoxButtons.OK,MessageBoxIcon.Information,120);              
-                
+                Properties.Settings.Default.UserName = username;
+                Properties.Settings.Default.Password = password;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Properties.Settings.Default.UserName = string.Empty;
+                Properties.Settings.Default.Password = string.Empty;
+                Properties.Settings.Default.Save();
+            }
+            frmMain fmain = new frmMain(username, password,ref err);
+            if (err == null)
+            {
+                MetroMessageBox.Show(this, "Đăng nhập thành công!", "Thông Báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information, 120);
+
                 this.Hide();
-                frmMain fmain = new frmMain();
                 fmain.ShowDialog();
                 this.Show();
-
             }
+            else MetroMessageBox.Show(this, err, "Thông Báo", MessageBoxButtons.OK,
+                MessageBoxIcon.Error,120);
         }
 
         private void frmLogin_Load(object sender, EventArgs e)
